@@ -1,6 +1,6 @@
 using UnityEngine;
 
-public class RandomWalkIdle : IIdleBehavior
+public class RandomWalkIdle : IBehavior
 {
     private float _moveSpeed = 1;
     private float _rotationSpeed = 1000;

@@ -1,6 +1,6 @@
 using UnityEngine;
 
-public class ScaredAnDieReaction : IReactionBehavior
+public class ScaredAnDieReaction : IBehavior
 {
     private Collider _characterCollider;
     private MeshRenderer _characterMesh;

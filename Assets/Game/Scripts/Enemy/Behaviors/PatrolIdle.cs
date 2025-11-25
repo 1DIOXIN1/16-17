@@ -1,7 +1,7 @@
 using System.Collections.Generic;
 using UnityEngine;
 
-public class PatrolIdle : IIdleBehavior
+public class PatrolIdle : IBehavior
 {
     private const float MIN_DISTANCE_TO_TARGET = 0.05f;
 

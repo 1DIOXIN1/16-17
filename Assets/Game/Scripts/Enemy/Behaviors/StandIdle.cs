@@ -1,4 +1,4 @@
-public class StandIdle : IIdleBehavior
+public class StandIdle : IBehavior
 {
     public void Execute()
     {

@@ -11,6 +11,9 @@ public class DistanceDetector
         _secondTarget = secondTarget;
     }
 
+    public Vector3 FirstTargetPosition => _firstTarget.position;
+    public Vector3 SecondTargetPosition => _secondTarget.position;
+
     public bool InZone(float maxDistance)
     {
         Vector3 direction = _secondTarget.position - _firstTarget.position;

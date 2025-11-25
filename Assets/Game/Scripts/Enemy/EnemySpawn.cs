@@ -4,58 +4,44 @@ using UnityEngine;
 public class EnemySpawn : MonoBehaviour
 {
     [SerializeField] private Enemy _enemyPrefab;
-    [SerializeField] private EnemyIdleTypes _idleType;
-    [SerializeField] private EnemyReactionTypes _reactionType;
-
+    [SerializeField] private EnemyBehaviorTypes _idleBehaviorType;
+    [SerializeField] private EnemyBehaviorTypes _ReactionBehaviorType;
     [SerializeField] private Transform _playerTransform;
-
     [SerializeField] private List<Transform> _targetsForPatrol;
+    [SerializeField]private ParticleSystem _particleAfterDie;
 
     private Enemy _enemy;
-
-    [SerializeField]private ParticleSystem _particleAfterDie;
 
     private void Start() 
     {
         _enemy = Instantiate(_enemyPrefab, transform.position, Quaternion.identity);
-        _enemy.Initialization(ChooseIdleType(), ChooseReactionType(), _playerTransform);
+        _enemy.Initialization(ChooseBehaviorType(_idleBehaviorType), ChooseBehaviorType(_ReactionBehaviorType), _playerTransform);
     }
 
-    private IIdleBehavior ChooseIdleType()
+    private IBehavior ChooseBehaviorType(EnemyBehaviorTypes behaviorType)
     {
-        switch (_idleType)
+        switch (behaviorType)
         {
-            case EnemyIdleTypes.Stand:
+            case EnemyBehaviorTypes.Stand:
                 return new StandIdle();
 
-            case EnemyIdleTypes.Patrol:
+            case EnemyBehaviorTypes.Patrol:
                 return new PatrolIdle(_enemy.transform, _targetsForPatrol);
 
-            case EnemyIdleTypes.RandomWalk:
+            case EnemyBehaviorTypes.RandomWalk:
                 return new RandomWalkIdle(_enemy.transform);
 
-            default:
-                return new StandIdle();
-        }
-    }
-
-    private IReactionBehavior ChooseReactionType()
-    {
-        switch (_reactionType)
-        {
-            case EnemyReactionTypes.RunTo:
+            case EnemyBehaviorTypes.RunTo:
                 return new RunToReaction(_enemy.transform, _playerTransform);
 
-            case EnemyReactionTypes.RunOut:
+            case EnemyBehaviorTypes.RunOut:
                 return new RunOutReaction(_enemy.transform, _playerTransform);
 
-            case EnemyReactionTypes.ScaredAndDie:
+            case EnemyBehaviorTypes.ScaredAndDie:
                 return new ScaredAnDieReaction(_enemy.GetComponent<Collider>(), _enemy.GetComponent<MeshRenderer>(), _particleAfterDie);
 
             default:
-                return new RunOutReaction(_enemy.transform, _playerTransform);
+                return new StandIdle();
         }
-
     }
-
 }
