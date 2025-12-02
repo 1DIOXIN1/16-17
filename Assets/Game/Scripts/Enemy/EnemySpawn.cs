@@ -1,11 +1,13 @@
 using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.AI;
 
 public class EnemySpawn : MonoBehaviour
 {
     [SerializeField] private Enemy _enemyPrefab;
     [SerializeField] private EnemyBehaviorTypes _idleBehaviorType;
     [SerializeField] private EnemyBehaviorTypes _ReactionBehaviorType;
+    [SerializeField] private EnemyLostTargetBehaviorTypes _LostTargetBehaviorType;
     [SerializeField] private Transform _playerTransform;
     [SerializeField] private List<Transform> _targetsForPatrol;
     [SerializeField]private ParticleSystem _particleAfterDie;
@@ -15,7 +17,7 @@ public class EnemySpawn : MonoBehaviour
     private void Start() 
     {
         _enemy = Instantiate(_enemyPrefab, transform.position, Quaternion.identity);
-        _enemy.Initialization(ChooseBehaviorType(_idleBehaviorType), ChooseBehaviorType(_ReactionBehaviorType), _playerTransform);
+        _enemy.Initialization(ChooseBehaviorType(_idleBehaviorType), ChooseBehaviorType(_ReactionBehaviorType), ChooseLastTargetBehaviorType(_LostTargetBehaviorType), _playerTransform);
     }
 
     private IBehavior ChooseBehaviorType(EnemyBehaviorTypes behaviorType)
@@ -27,6 +29,9 @@ public class EnemySpawn : MonoBehaviour
 
             case EnemyBehaviorTypes.Patrol:
                 return new PatrolIdle(_enemy.transform, _targetsForPatrol);
+            
+            case EnemyBehaviorTypes.PatrolNavMesh:
+                return new PatrolIdleNavMesh(_enemy.GetComponent<NavMeshAgent>(), _targetsForPatrol);
 
             case EnemyBehaviorTypes.RandomWalk:
                 return new RandomWalkIdle(_enemy.transform);
@@ -39,9 +44,24 @@ public class EnemySpawn : MonoBehaviour
 
             case EnemyBehaviorTypes.ScaredAndDie:
                 return new ScaredAnDieReaction(_enemy.GetComponent<Collider>(), _enemy.GetComponent<MeshRenderer>(), _particleAfterDie);
+            
+            case EnemyBehaviorTypes.LostTarget:
+                return new RunToNavMeshAgentLostTarget(_enemy.GetComponent<NavMeshAgent>());
 
             default:
                 return new StandIdle();
+        }
+    }
+
+    private ILostTarget ChooseLastTargetBehaviorType(EnemyLostTargetBehaviorTypes behaviorType)
+    {
+        switch (behaviorType)
+        {
+            case EnemyLostTargetBehaviorTypes.RunToNavMesh:
+                return new RunToNavMeshAgentLostTarget(_enemy.GetComponent<NavMeshAgent>());
+
+            default:
+                return new RunToNavMeshAgentLostTarget(_enemy.GetComponent<NavMeshAgent>());
         }
     }
 }

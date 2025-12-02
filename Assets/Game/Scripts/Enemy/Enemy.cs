@@ -10,25 +10,23 @@ public class Enemy : MonoBehaviour
 
     private IBehavior _idleBehavior;
     private IBehavior _reactionBehavior;
-    private LostTargetReaction _lostTargetBehavior;
-    private NavMeshAgent _agent;
+    private ILostTarget _lostTargetBehavior;
 
     private DistanceDetector _distanceDetector;
     private Transform _targetTransform;
 
-    private bool _hasEverSeenTarget = false;
-    private Vector3 _lastSeenPoint;
+    private Vector3 _lastSeenTargetPosition;
 
-    public void Initialization(IBehavior idleBehavior, IBehavior reactionBehavior, Transform targetTransform)
+    private bool _hasEverSeenTarget = false;
+
+    public void Initialization(IBehavior idleBehavior, IBehavior reactionBehavior, ILostTarget lostTargetBehavior, Transform targetTransform)
     {
         _idleBehavior = idleBehavior;
         _reactionBehavior = reactionBehavior;
         _targetTransform = targetTransform;
-
-        _agent = GetComponent<NavMeshAgent>();
+        _lostTargetBehavior = lostTargetBehavior;
 
         _distanceDetector = new DistanceDetector(transform, targetTransform);
-        _lostTargetBehavior = new LostTargetReaction(transform, _agent);
     }
 
     private void Update()
@@ -62,49 +60,51 @@ public class Enemy : MonoBehaviour
         if (seesTarget)
         {
             _hasEverSeenTarget = true;
+            _lastSeenTargetPosition = _targetTransform.position;
             _currentState = EnemyState.Reaction;
             return;
         }
 
-        _idleBehavior.Execute();
+        _idleBehavior.Execute(Time.deltaTime);
     }
 
     private void HandleReaction(bool seesTarget)
     {
-        if (seesTarget == false)
+        if (!seesTarget)
         {
             if (_hasEverSeenTarget)
             {
-                _lastSeenPoint = _targetTransform.position;
-                _lostTargetBehavior.SetTargetPoint(_lastSeenPoint);
+                _lostTargetBehavior.SetLastSeenPosition(_lastSeenTargetPosition);
+
                 _currentState = EnemyState.LostTarget;
                 return;
             }
         }
+        else
+        {
+            _lastSeenTargetPosition = _targetTransform.position;
+        }
 
-        _reactionBehavior.Execute();
+        _reactionBehavior.Execute(Time.deltaTime);
     }
 
     private void HandleLostTarget(bool seesPlayer)
     {
         if (seesPlayer)
         {
-            _lostTargetBehavior.Agent.ResetPath();
-
+            _lostTargetBehavior.End();
             _currentState = EnemyState.Reaction;
             return;
         }
 
-        _lostTargetBehavior.Execute();
+        _lostTargetBehavior.Execute(Time.deltaTime);
 
-        if (_lostTargetBehavior.IsPointReached())
+        if (_lostTargetBehavior.IsFinished)
         {
-            _lostTargetBehavior.Agent.ResetPath();
-
+            _lostTargetBehavior.End();
             _currentState = EnemyState.Idle;
         }
     }
-
 
     private void OnDrawGizmos()
     {

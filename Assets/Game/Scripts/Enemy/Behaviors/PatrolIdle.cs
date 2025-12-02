@@ -27,7 +27,7 @@ public class PatrolIdle : IBehavior
         SwitchTarget();
     }
     
-    public void Execute()
+    public void Execute(float deltaTime)
     {
         Vector3 direction = GetDirectionToTarget();
 
@@ -36,8 +36,8 @@ public class PatrolIdle : IBehavior
         
         Vector3 normalizedDirection = direction.normalized;
 
-        _mover.ProcessMoveTo(normalizedDirection);
-        _mover.ProcessRotateTo(normalizedDirection);
+        _mover.ProcessMoveTo(normalizedDirection, deltaTime);
+        _mover.ProcessRotateTo(normalizedDirection, deltaTime);
     }
 
     private Vector3 GetDirectionToTarget() => _currentTarget - _characterTransform.position;

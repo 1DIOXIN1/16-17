@@ -18,12 +18,12 @@ public class RunOutReaction : IBehavior
         _mover = new Mover(characterTransform, _moveSpeed, _rotationSpeed);
     }
 
-    public void Execute()
+    public void Execute(float deltaTime)
     {
         Vector3 normalizedDirection = GetDirectionToTarget().normalized;
 
-        _mover.ProcessMoveTo(new Vector3(-normalizedDirection.x, 0, -normalizedDirection.z));
-        _mover.ProcessRotateTo(new Vector3(-normalizedDirection.x, 0, -normalizedDirection.z));
+        _mover.ProcessMoveTo(new Vector3(-normalizedDirection.x, 0, -normalizedDirection.z), deltaTime);
+        _mover.ProcessRotateTo(new Vector3(-normalizedDirection.x, 0, -normalizedDirection.z), deltaTime);
     }
 
     private Vector3 GetDirectionToTarget() => _targetTransform.position - _characterTransform.position;

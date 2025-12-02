@@ -1,4 +1,4 @@
 public interface IBehavior
 {
-    void Execute();
+    void Execute(float deltaTime);
 }

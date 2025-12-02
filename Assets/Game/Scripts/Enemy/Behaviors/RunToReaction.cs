@@ -18,12 +18,12 @@ public class RunToReaction : IBehavior
         _mover = new Mover(characterTransform, _moveSpeed, _rotationSpeed);
     }
 
-    public void Execute()
+    public void Execute(float deltaTime)
     {
         Vector3 normalizedDirection = GetDirectionToTarget().normalized;
 
-        _mover.ProcessMoveTo(normalizedDirection);
-        _mover.ProcessRotateTo(normalizedDirection);
+        _mover.ProcessMoveTo(normalizedDirection, deltaTime);
+        _mover.ProcessRotateTo(normalizedDirection, deltaTime);
     }
 
     private Vector3 GetDirectionToTarget() => _targetTransform.position - _characterTransform.position;

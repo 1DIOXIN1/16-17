@@ -16,7 +16,7 @@ public class ScaredAnDieReaction : IBehavior
         _characterMesh = characterMesh;
     }
 
-    public void Execute()
+    public void Execute(float deltaTime)
     {
         if(_isDie)
             return;

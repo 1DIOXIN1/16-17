@@ -25,8 +25,8 @@ public class Player : MonoBehaviour
         if(_input.magnitude <= _deadZone)
             return;
 
-        _mover.ProcessMoveTo(GetNormalizedDirection());
-        _mover.ProcessRotateTo(GetNormalizedDirection());
+        _mover.ProcessMoveTo(GetNormalizedDirection(), Time.deltaTime);
+        _mover.ProcessRotateTo(GetNormalizedDirection(), Time.deltaTime);
     }
 
     public Vector3 GetNormalizedDirection() => _input.normalized;

@@ -242,6 +242,10 @@ PrefabInstance:
       value: 
       objectReference: {fileID: 703661353}
     - target: {fileID: 1190316857028762016, guid: dab9aa6cd9075db44b6b75d4596055c2, type: 3}
+      propertyPath: _LostTargetBehaviorType
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 1190316857028762016, guid: dab9aa6cd9075db44b6b75d4596055c2, type: 3}
       propertyPath: _targetsForPatrol.Array.size
       value: 3
       objectReference: {fileID: 0}
@@ -706,6 +710,10 @@ PrefabInstance:
       value: 
       objectReference: {fileID: 703661353}
     - target: {fileID: 1190316857028762016, guid: dab9aa6cd9075db44b6b75d4596055c2, type: 3}
+      propertyPath: _LostTargetBehaviorType
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 1190316857028762016, guid: dab9aa6cd9075db44b6b75d4596055c2, type: 3}
       propertyPath: _targetsForPatrol.Array.size
       value: 3
       objectReference: {fileID: 0}
@@ -1017,6 +1025,10 @@ PrefabInstance:
       propertyPath: _targets.Array.data[2]
       value: 
       objectReference: {fileID: 703661353}
+    - target: {fileID: 1190316857028762016, guid: dab9aa6cd9075db44b6b75d4596055c2, type: 3}
+      propertyPath: _LostTargetBehaviorType
+      value: 0
+      objectReference: {fileID: 0}
     - target: {fileID: 1190316857028762016, guid: dab9aa6cd9075db44b6b75d4596055c2, type: 3}
       propertyPath: _targetsForPatrol.Array.size
       value: 3

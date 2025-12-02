@@ -17,7 +17,7 @@ public class RandomWalkIdle : IBehavior
         _mover = new Mover(characterTransform, _moveSpeed, _rotationSpeed);
     }
 
-    public void Execute()
+    public void Execute(float deltaTime)
     {
         if(_timeBeforeChangeDirection <= _currentTime)
         {
@@ -29,8 +29,8 @@ public class RandomWalkIdle : IBehavior
             _currentTime += Time.deltaTime;
         }
 
-        _mover.ProcessMoveTo(_currentDirection);
-        _mover.ProcessRotateTo(_currentDirection);
+        _mover.ProcessMoveTo(_currentDirection, deltaTime);
+        _mover.ProcessRotateTo(_currentDirection, deltaTime);
     }
 
     private void SwitchDirection()
