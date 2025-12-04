@@ -13,6 +13,8 @@ public class Player : MonoBehaviour
     private Vector3 _input;
     private Mover _mover;
 
+    public Vector3 CurrentVelocity => _input;
+
     private void Awake()
     {
         _mover = new Mover(transform, _moveSpeed, _rotationSpeed);

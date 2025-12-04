@@ -19,6 +19,9 @@ public class Enemy : MonoBehaviour
 
     private bool _hasEverSeenTarget = false;
 
+    private NavMeshAgent _agent;
+    public Vector3 CurrentVelocity => _agent.velocity;
+
     public void Initialization(IBehavior idleBehavior, IBehavior reactionBehavior, ILostTarget lostTargetBehavior, Transform targetTransform)
     {
         _idleBehavior = idleBehavior;
@@ -27,6 +30,8 @@ public class Enemy : MonoBehaviour
         _lostTargetBehavior = lostTargetBehavior;
 
         _distanceDetector = new DistanceDetector(transform, targetTransform);
+
+        _agent = GetComponent<NavMeshAgent>();
     }
 
     private void Update()
