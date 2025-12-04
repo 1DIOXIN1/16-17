@@ -47,6 +47,9 @@ public class EnemySpawn : MonoBehaviour
             
             case EnemyBehaviorTypes.LostTarget:
                 return new RunToNavMeshAgentLostTarget(_enemy.GetComponent<NavMeshAgent>());
+            
+            case EnemyBehaviorTypes.RunToNavMesh:
+                return new RunToNavMeshAgentReaction(_enemy.GetComponent<NavMeshAgent>(), _enemy.transform, _playerTransform);
 
             default:
                 return new StandIdle();
